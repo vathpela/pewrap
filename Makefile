@@ -53,10 +53,12 @@ clean:
 	rm -f *.debug *.so *.efi pewrap
 
 install:
-	$(INSTALL) -d -m 755 /usr/share/pewrap
-	$(INSTALL) -m 644 module.efi /usr/share/pewrap/module.efi
-	$(INSTALL) -d -m 755 /usr/bin
-	$(INSTALL) -m 755 pewrap /usr/bin/pewrap
+	$(INSTALL) -d -m 755 $(INSTALLROOT)/usr/share/pewrap/
+	$(INSTALL) -m 644 module.efi $(INSTALLROOT)/usr/share/pewrap/module.efi
+	$(INSTALL) -d -m 755 $(INSTALLROOT)/usr/bin/
+	$(INSTALL) -m 755 pewrap $(INSTALLROOT)/usr/bin/pewrap
+	$(INSTALL) -d -m 755 $(INSTALLROOT)/usr/share/man/man1/
+	$(INSTALL) -m 644 pewrap.1 $(INSTALLROOT)/usr/share/man/man1/
 
 GITTAG = $(VERSION)
 
