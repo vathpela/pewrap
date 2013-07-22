@@ -1,17 +1,12 @@
 # Object files
 *.o
 
-# Libraries
-*.lib
-*.a
-
-# Shared objects (inc. Windows DLLs)
-*.dll
+# Shared objects
 *.so
 *.so.*
-*.dylib
+*.efi
 
 # Executables
-*.exe
-*.out
-*.app
+*.efi
+
+pewrap
