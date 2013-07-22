@@ -21,6 +21,8 @@ endif
 
 LDFLAGS		= -nostdlib -znocombreloc -T $(EFI_LDS) -shared -Bsymbolic -L$(EFI_PATH) -L$(LIB_PATH) $(EFI_CRT_OBJS)
 
+INSTALL		= install
+
 VERSION		= 0.1
 
 TARGET	= module.efi
@@ -48,7 +50,13 @@ module.so: $(OBJS)
 
 clean:
 	rm -rf $(TARGET) $(OBJS)
-	rm -f *.debug *.so *.efi
+	rm -f *.debug *.so *.efi pewrap
+
+install:
+	$(INSTALL) -d -m 755 /usr/share/pewrap
+	$(INSTALL) -m 644 module.efi /usr/share/pewrap/module.efi
+	$(INSTALL) -d -m 755 /usr/bin
+	$(INSTALL) -m 755 pewrap /usr/bin/pewrap
 
 GITTAG = $(VERSION)
 

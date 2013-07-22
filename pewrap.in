@@ -32,10 +32,14 @@ fi
 
 [ "$#" -ne 2 ] && error
 
-filesize=$(stat -c '%s' module.efi)
+TEMPLATE=/usr/share/pewrap/module.efi
+
+filesize=$(stat -c '%s' $TEMPLATE)
 # this is a seriously silly hack, but for some reason the filesize as a
 # location gets .keylist in the middle of the file, and it really has to be
 # at the end
 filesize=$(($filesize + 10000))
 
-objcopy --add-section ".keylist=$1" --change-section-address ".keylist=$filesize" module.efi $2
+objcopy --add-section ".keylist=$1" \
+	--change-section-address ".keylist=$filesize" \
+	$TEMPLATE $2
