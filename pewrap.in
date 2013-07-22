@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+function usage() {
+	echo "usage: pewrap <key.cer> <output.efi>"
+	if [ "$?" -ne 0 ]; then
+		exit 0
+	else
+		exit $1
+	fi
+	echo bar
+}
+
+function error() {
+	cat 1>&2 <<EOF
+$(usage 1)
+EOF
+	exit 1
+}
+
+if [ "$#" -eq 1 ]; then
+	if [ "$1" == "--help" -o "$1" == "-h" -o "$1" == "-?" ]; then
+		usage 0
+	elif [ "$1" == "--version" ]; then
+		echo "pewrap version @@VERSION@@"
+		exit 0
+	else
+		error
+	fi
+fi
+
+[ "$#" -ne 2 ] && error
+
+filesize=$(stat -c '%s' module.efi)
+# this is a seriously silly hack, but for some reason the filesize as a
+# location gets .keylist in the middle of the file, and it really has to be
+# at the end
+filesize=$(($filesize + 10000))
+
+objcopy --add-section ".keylist=$1" --change-section-address ".keylist=$filesize" module.efi $2
