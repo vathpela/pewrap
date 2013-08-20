@@ -29,10 +29,13 @@ TARGET	= module.efi
 OBJS	= module.o
 SOURCES	= module.c
 
-all: $(TARGET) pewrap
+all: $(TARGET) pewrap peunwrap
 
 pewrap : pewrap.in
 	sed "s/@@VERSION@@/$(VERSION)/g" pewrap.in > pewrap
+
+peunwrap : peunwrap.in
+	sed "s/@@VERSION@@/$(VERSION)/g" peunwrap.in > peunwrap
 
 module.o: $(SOURCES)
 
@@ -50,15 +53,17 @@ module.so: $(OBJS)
 
 clean:
 	rm -rf $(TARGET) $(OBJS)
-	rm -f *.debug *.so *.efi pewrap
+	rm -f *.debug *.so *.efi pewrap peunwrap
 
 install:
 	$(INSTALL) -d -m 755 $(INSTALLROOT)/usr/share/pewrap/
 	$(INSTALL) -m 644 module.efi $(INSTALLROOT)/usr/share/pewrap/module.efi
 	$(INSTALL) -d -m 755 $(INSTALLROOT)/usr/bin/
 	$(INSTALL) -m 755 pewrap $(INSTALLROOT)/usr/bin/pewrap
+	$(INSTALL) -m 755 peunwrap $(INSTALLROOT)/usr/bin/peunwrap
 	$(INSTALL) -d -m 755 $(INSTALLROOT)/usr/share/man/man1/
 	$(INSTALL) -m 644 pewrap.1 $(INSTALLROOT)/usr/share/man/man1/
+	$(INSTALL) -m 644 peunwrap.1 $(INSTALLROOT)/usr/share/man/man1/
 
 GITTAG = $(VERSION)
 

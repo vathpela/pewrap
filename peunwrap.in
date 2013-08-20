@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+function usage() {
+	echo "usage: peunwrap <key.cer> <output.efi>"
+	if [ "$?" -ne 0 ]; then
+		exit 0
+	else
+		exit $1
+	fi
+	echo bar
+}
+
+function error() {
+	cat 1>&2 <<EOF
+$(usage 1)
+EOF
+	exit 1
+}
+
+if [ "$#" -eq 1 ]; then
+	if [ "$1" == "--help" -o "$1" == "-h" -o "$1" == "-?" ]; then
+		usage 0
+	elif [ "$1" == "--version" ]; then
+		echo "peunwrap version @@VERSION@@"
+		exit 0
+	else
+		error
+	fi
+fi
+
+[ "$#" -ne 2 ] && error
+
+objcopy -O binary --only-section=.keylist $1 $2
